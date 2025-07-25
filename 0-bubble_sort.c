@@ -3,35 +3,34 @@
 
 /**
 * bubble_sort - this function impliments bubble sort algorithm
- * after each swap the curent the curent array is printed
+ * after each swap the curent array is printed
 * @array: the array of integers to be sorted
 * @size: size of the array
 * Return: void
 */
 void bubble_sort(int *array, size_t size)
 {
-	size_t i, j;
+	size_t i, j, x;
 	int temp;
-	int swap_flag;
 
-	if (size < 2)
-		return;
-	for (i = 0; i < size - 1; i++)
+	for (i = 0; i < size; i++)
 	{
-		swap_flag = 0;
-		for (j = 0; j + 1 < size - i; j++)
+		for (j = 0; j < size - 1; j++)
 		{
 			if (array[j] > array[j + 1])
 			{
 				temp = array[j];
 				array[j] = array[j + 1];
 				array[j + 1] = temp;
-				swap_flag = 1;
-				print_array(array, size);
-			}
-
+			
+			for (x = 0; x < size; x++)
+			{
+				printf("%d", array[x]);
+				if (x == size - 1)
+					printf("\n");
+				else
+					printf(", ");
+			}}
 		}
-		if (swap_flag == 0)
-			return;
 	}
 }

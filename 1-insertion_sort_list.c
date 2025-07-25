@@ -9,40 +9,43 @@
 */
 void insertion_sort_list(listint_t **list)
 {
-	size_t i, j;
-	listint_t *temp, *temp2;
+	listint_t *next_current, *current, *temp, *prev, *next;
 
-	if (list == NULL)
+	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
-	if (*list == NULL)
-		return;
-	if ((*list)->next == NULL)
-		return;
-	temp2 = (*list)->next;
-	for (i = 1; temp2 != NULL; i++)
+
+	current = (*list)->next;
+	while (current != NULL)
 	{
-		j = 0;
-		temp = temp2;
-		temp2 = temp2->next;
-		while (j != i && temp->prev != NULL)
+		next_current = current->next;
+		temp = current;
+
+		while (temp->prev != NULL && temp->n < temp->prev->n)
 		{
-			i += 1;
-			if (temp->prev->n > temp->n)
-			{
-				temp->prev->next = temp->next;
-				temp->next = temp->prev;
-				temp->prev = temp->prev->prev;
-				temp->next->prev = temp;
-				if (temp->prev != NULL)
-					temp->prev->next = temp;
-				if (temp->next->next != NULL)
-					temp->next->next->prev = temp->next;
-				if (temp->prev == NULL)
-					*list = temp;
-				print_list(*list);
-			}
-			else
-				break;
+			/* Swap temp and temp->prev */
+			prev = temp->prev;
+			next = temp->next;
+
+			/* Detatch temp */
+			if (prev->prev)
+				prev->prev->next = temp;
+			temp->prev = prev->prev;
+
+			/* Reconnect temp before prev */
+			temp->next = prev;
+			prev->prev = temp;
+
+			/* Reconnect prev to next */
+			prev->next = next;
+			if (next)
+				next->prev = prev;
+
+			/* update head if needed */
+			if (temp->prev == NULL)
+				*list = temp;
+
+			print_list(*list);
 		}
+		current = next_current;
 	}
 }

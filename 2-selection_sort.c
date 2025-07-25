@@ -9,29 +9,28 @@
 */
 void selection_sort(int *array, size_t size)
 {
-	size_t i, j, smallest;
-	int temp, swap_flag;
+	size_t i, j, min_index;
+	int temp;
 
-	for (i = 0; i  < size; i++)
+	if (!array || size < 2)
+		return;
+	for (i = 0; i < size; i++)
 	{
-		smallest = i;
-		swap_flag = 0;
-		for (j = i; j  < size; j++)
+		min_index = i;
+		/* Find index of the minimum element in the unsorted */
+		for (j = i + 1; j < size; j++)
 		{
-			if (array[smallest] > array[j])
-			{
-				swap_flag = 1;
-				smallest = j;
-			}
+			if (array[j] < array[min_index])
+				min_index = j;
 		}
-		if (i != smallest)
+		 /* swap if needed */
+		if (min_index != i)
 		{
-		temp = array[i];
-		array[i] = array[smallest];
-		array[smallest] = temp;
-		print_array(array, size);
-		if (swap_flag == 0)
-			return;
+			temp = array[i];
+			array[i] = array[min_index];
+			array[min_index] = temp;
+
+			print_array(array, size);
 		}
 	}
 }

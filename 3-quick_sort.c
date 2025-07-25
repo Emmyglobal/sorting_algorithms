@@ -1,64 +1,68 @@
+#include <stdio.h>
 #include "sort.h"
 
-size_t split(int *ar, int start, int s)
-{
-	int i, j, piv, temp, dif = s - start;
+/*
+ * quick_sort -> Sorts array of int in ascending order using Quick sort
+ * @array: Array of integers to be sorted
+ * @size: Size of the array
+ *
+ * Return: Nothing
+ */
 
-	piv = (dif % 2 == 0) ? dif / 2 : (dif - 1) / 2;
-	piv = start + piv;
-	printf("%d \n", ar[piv]);
-	for (i = start; i < piv; i++)
-	{
-	
-		if (ar[i] > ar[piv])
-		{
-			for (j = 0; j < piv; j++)
-			{
-				if (ar[s - 1 - j] < ar[piv])
-				{
-					temp = ar[i];
-					ar[i] = ar[s - 1 -j];
-					ar[s - 1 - j] = temp;
-					break;
-				}
-			}
-			printf("%d - %d\n", j, piv);
-			if (j == piv)
-			{
-				temp = ar[piv];
-				ar[piv] = ar[i];
-				ar[i] = temp;
-				break;
-			}
-		}
-	}
-	for (j = 0; i + j < s; j++)
-	{
-		printf("%d - %d\n", ar[i+j],ar[i]);
-		if (ar[i + j] < ar[i])
-		{
-			temp = ar[i];
-			ar[i] = ar[i + j];
-			ar[i + j] = temp;
-			i = i + j;
-			j = 0;
-		}
-	}
-	return (i);
-}
-
-/**
-* quick_sort - an implimentation of quick sort algorithm
-* @array: the array to be sorted
-* @size: the size of the array
-* Return: NULL
-*/
 void quick_sort(int *array, size_t size)
 {
-	size_t i, mid;
-
-	if (size < 2)
+	if (array == NULL || size < 2)
 		return;
-	mid = split(array, size);
-	quick_sort(array, mid);
+
+	sort(array, 0, size - 1, size);
+}
+
+
+/**
+ * sort -> a recursive inline function for sorting the array
+ * @low: lowest index
+ * @high: highest index
+ *
+ * Return: Nothing
+ */
+
+void sort(int *array, int low, int high, int size)
+{
+	int k, i, j, pivot, temp, index_of_pivot;
+
+
+	/* base case */
+	if (low >= high)
+		return;
+	
+	pivot = array[high];
+	i = low - 1;
+
+	for (j = low; j < high; j++)
+	{
+		if (array[j] <= pivot)
+		{
+			i++;
+			temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+	}
+
+	temp = array[i + 1];
+	array[i + 1] = array[high];
+	array[high] = temp;
+
+	index_of_pivot = i + 1;
+
+	for (k = 0; k < size; k++)
+	{
+		if (k < size - 1)
+			printf("%d, ", array[k]);
+		else
+			printf("%d\n", array[k]);
+	}
+
+	sort(array, low, index_of_pivot - 1, size);
+	sort(array, index_of_pivot + 1, high, size);
 }
